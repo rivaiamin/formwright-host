@@ -72,26 +72,27 @@ panel controls.
 
 ## Tier 2 — Power features (high value, larger builds)
 
-- [ ] **2.1 Triggers & calculated values** — ★★★ · L — the single biggest capability jump (static forms → interactive flows). A dedicated "Automation" editor reusing the `logic-expression` compiler.
-  - [ ] `triggers[]`: `complete`, `setvalue`, `copyvalue`, `runexpression`, `skip`
-  - [ ] `calculatedValues[]` (named expressions for text piping + logic)
-- [ ] **2.2 More field types** — ★★★ · L (incremental) — one registry entry + one card preview each; ship by demand.
-  - [ ] matrix (single-select grid)
+- [x] **2.1 Triggers & calculated values** — ★★★ · L — the single biggest capability jump (static forms → interactive flows). An "Automation" section in Form settings; verified firing at runtime on the public form.
+  - [x] `triggers[]`: `complete`, `setvalue`, `copyvalue`, `runexpression`, `skip`
+  - [x] `calculatedValues[]` (named expressions for text piping + logic)
+- [~] **2.2 More field types** — ★★★ · L (incremental) — one registry entry + one card preview each; ship by demand. _First batch shipped; rest by demand._
+  - [x] matrix (single-select grid) — rows/columns editor
+  - [x] ranking
+  - [x] multiple text — items editor
+  - [x] tagbox (multi-select dropdown)
+  - [x] expression (read-only computed display)
   - [ ] matrix dropdown / dynamic (currently preserved-and-locked; give them editors)
-  - [ ] panel & panel dynamic (repeating groups)
-  - [ ] ranking
-  - [ ] image picker
-  - [ ] multiple text
-  - [ ] tagbox (multi-select dropdown)
-  - [ ] expression (read-only computed display)
+  - [ ] panel & panel dynamic (repeating groups — needs nested canvas)
+  - [ ] image picker (needs per-choice image URL editor)
   - [ ] color / button group
-- [ ] **2.3 Theme / appearance editor** — ★★★ · L — visual theme picker (swatches + presets) writing the `theme` JSON the public renderer already accepts. Biggest visual-polish lever.
-  - [ ] primary color / background
-  - [ ] corner radius / density / panel-less mode
-  - [ ] font
-- [ ] **2.4 Welcome / start page** — ★★ · M — `firstPageIsStarted` + `startSurveyText`; a toggle on page 1 plus the start-button label.
-- [ ] **2.5 Table of contents & page navigation** — ★★ · M — survey `showTOC` + `tocLocation`; page `navigationTitle` / `navigationDescription`.
-- [ ] **2.6 Dynamic choices** — ★★ · M — `choicesByUrl` (REST endpoint) and `choicesFromQuestion` (carry-forward). Small UI, big data-driven payoff.
+- [x] **2.3 Theme / appearance editor** — ★★★ · L — visual theme picker (presets + accent + light/dark) writing `schema.theme`, applied by every renderer via `applyStoredTheme`.
+  - [x] accent colour (+ presets) / light-dark palette
+  - [x] corner radius / density / panel-less mode
+  - [x] font
+  - [ ] background colour — _deferred (needs the derived-colour set to look right)_
+- [x] **2.4 Welcome / start page** — ★★ · M — `firstPageIsStarted` + `startSurveyText`; toggle in Form settings, "Start page" badge on page 1 in the canvas.
+- [x] **2.5 Table of contents & page navigation** — ★★ · M — survey `showTOC` + `tocLocation`; page `navigationTitle` / `navigationDescription`.
+- [x] **2.6 Dynamic choices** — ★★ · M — a "Choices from" source picker (fixed list / another question / web service) writing `choicesByUrl` and `choicesFromQuestion`.
 
 ---
 
