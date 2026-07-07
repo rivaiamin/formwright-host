@@ -36,35 +36,37 @@ Legend — **Effort:** S (hours) · M (a day) · L (multi-day). **Impact:** ★�
 High-impact gaps that users hit on almost any real form. Mostly small, additive
 panel controls.
 
-- [ ] **1.1 Branding & header** — ★★★ · S — "Header & branding" section in Form settings; logo reuses the image/upload plumbing.
-  - [ ] `logo` + `logoPosition` (left/right/top/bottom)
-  - [ ] `logoWidth` / `logoHeight` / `logoFit`
-  - [ ] `showTitle` / `showPageTitles`
-- [ ] **1.2 Completion & redirect** — ★★★ · S–M — extends the "After submitting" section.
-  - [ ] `navigateToUrl` (redirect after submit)
-  - [ ] `completedHtmlOnCondition` (per-outcome thank-you — pairs with quiz scoring)
-  - [ ] `completedBeforeHtml` (already-submitted message)
-  - [ ] `loadingHtml` / `showCompletedPage`
-- [ ] **1.3 Validation behavior** — ★★★ · S — "Validation & behavior" section in Form settings.
-  - [ ] `checkErrorsMode` (onNextPage / onValueChanged / onComplete)
-  - [ ] `questionErrorLocation` (top/bottom)
-  - [ ] `clearInvisibleValues` (none/onHidden/onComplete)
-  - [ ] `focusOnFirstError` / `focusFirstQuestion`
-- [ ] **1.4 Field validators** — ★★★ · M — a "Validation" repeater in the field panel; highest-value field-level gap after logic.
-  - [ ] `numeric` (min/max)
-  - [ ] `text` (min/max length)
-  - [ ] `email`
-  - [ ] `regex` (pattern + message)
-  - [ ] `expression` / `answercount`
-- [ ] **1.5 Field appearance & layout** — ★★ · M — turns the single-column canvas into real multi-column layouts.
-  - [ ] `placeholder`
-  - [ ] `titleLocation` (top/bottom/left/hidden) / `descriptionLocation`
-  - [ ] `startWithNewLine` + `width` / `minWidth` / `maxWidth` (side-by-side fields)
-  - [ ] `defaultValueExpression`
-- [ ] **1.6 Navigation buttons control** — ★★ · S — a "Navigation" refinement.
-  - [ ] `showNavigationButtons` / `showPrevButton` / `showCompleteButton`
-  - [ ] `goNextPageAutomatic` / `allowCompleteSurveyAutomatic`
-  - [ ] page-level `navigationButtonsVisibility` (inherit/show/hide)
+- [x] **1.1 Branding & header** — ★★★ · S — "Header & branding" section in Form settings. _(logo is a URL for now; upload wiring is separate.)_
+  - [x] `logo` + `logoPosition` (left/right/top/bottom)
+  - [x] `logoWidth` / `logoHeight` / `logoFit`
+  - [x] `showTitle` / `showPageTitles`
+- [x] **1.2 Completion & redirect** — ★★★ · S–M — extends the "After submitting" section.
+  - [x] `navigateToUrl` (redirect after submit)
+  - [x] `completedHtmlOnCondition` (per-outcome thank-you — pairs with quiz scoring)
+  - [x] `showCompletedPage`
+  - [ ] `completedBeforeHtml` (already-submitted message) · `loadingHtml` — _deferred_
+- [x] **1.3 Validation behavior** — ★★★ · S — "Validation & behavior" section in Form settings.
+  - [x] `checkErrorsMode` (onNextPage / onValueChanged / onComplete)
+  - [x] `questionErrorLocation` (top/bottom)
+  - [x] `clearInvisibleValues` (none/onHidden/onComplete)
+  - [x] `focusOnFirstError` / `focusFirstQuestionAutomatic`
+- [x] **1.4 Field validators** — ★★★ · M — a "Validation" repeater in the field panel; highest-value field-level gap after logic.
+  - [x] `numeric` (min/max)
+  - [x] `text` (min/max length)
+  - [x] `email`
+  - [x] `regex` (pattern + message)
+  - [x] `expression` / `answercount`
+- [x] **1.5 Field appearance & layout** — ★★ · M — turns the single-column canvas into real multi-column layouts.
+  - [x] `placeholder` (types that support it)
+  - [x] `titleLocation` (top/bottom/left/hidden)
+  - [x] `startWithNewLine` + `width` (side-by-side fields)
+  - [x] `defaultValueExpression`
+  - [ ] `descriptionLocation` · `minWidth` / `maxWidth` — _deferred_
+- [x] **1.6 Navigation buttons control** — ★★ · S — a "Navigation" refinement.
+  - [x] `showNavigationButtons` / `showPrevButton`
+  - [x] `goNextPageAutomatic`
+  - [x] page-level `navigationButtonsVisibility` (inherit/show/hide)
+  - [ ] `showCompleteButton` · `allowCompleteSurveyAutomatic` — _deferred_
 
 ---
 
