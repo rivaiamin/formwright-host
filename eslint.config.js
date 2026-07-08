@@ -106,11 +106,32 @@ export default ts.config(
             'bootstrap/ssr',
             'tailwind.config.js',
             'vite.config.ts',
+            // Generated/compiled bundles — never lint build output.
+            'resources/dist/**',
+            'resources/js/builder/dist/**',
             'resources/js/actions/**',
             'resources/js/components/ui/*',
             'resources/js/routes/**',
             'resources/js/wayfinder/**',
         ],
+    },
+    {
+        // The SurveyJS builder relies on two Svelte 5 idioms these rules can't
+        // model, so both fire only false positives here:
+        //  - bare reactive reads (`store.rev;`) inside $effect/$derived.by that
+        //    exist solely to register a dependency — flagged as unused
+        //    expressions though they are the whole point of the statement.
+        //  - plain Sets used as module-level lookup tables (LOCALIZED_KEYS,
+        //    RTL_LOCALES) and local dedup helpers — never reactive state, so
+        //    SvelteSet would add reactivity overhead for no reason.
+        files: [
+            'resources/js/builder/**/*.svelte',
+            'resources/js/builder/**/*.svelte.ts',
+        ],
+        rules: {
+            '@typescript-eslint/no-unused-expressions': 'off',
+            'svelte/prefer-svelte-reactivity': 'off',
+        },
     },
     prettier, // Turn off all rules that might conflict with Prettier
     {
