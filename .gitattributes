@@ -8,3 +8,9 @@
 
 CHANGELOG.md export-ignore
 README.md export-ignore
+
+# Generated bundles — never hand-merge; keep our side and regenerate after merging.
+public/js/app/formwright-designer.js     merge=ours -diff linguist-generated
+public/css/app/formwright-designer.css   merge=ours -diff linguist-generated
+public/vendor/formwright/**              merge=ours -diff linguist-generated
+resources/js/builder/dist/**             merge=ours -diff linguist-generated
