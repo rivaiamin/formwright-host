@@ -168,3 +168,56 @@ it('renders every newly supported type on the public form', function () {
         ->assertSee('Template field')
         ->assertNoJavaScriptErrors();
 });
+
+it('adds a colour field as text with inputType colour', function () {
+    $page = visit('/admin/designer-page');
+
+    $page->assertSee('Formwright Designer')
+        ->click('[data-block-id="color"]')
+        ->click('Save')
+        ->assertSee('Saved')
+        ->assertNoJavaScriptErrors();
+
+    $el = FormSchema::query()->latest('id')->first()->json['pages'][0]['elements'][0];
+
+    expect($el['type'])->toBe('text')
+        ->and($el['inputType'])->toBe('color');
+});
+
+it('sets help-text position and min/max width on a field', function () {
+    $page = visit('/admin/designer-page');
+
+    $page->click('[data-block-id="short_text"]')
+        ->click('[data-testid="appearance-toggle"]')
+        ->select('[data-testid="description-location"]', 'underTitle')
+        ->fill('[data-testid="field-min-width"]', '200px')
+        ->fill('[data-testid="field-max-width"]', '480px')
+        ->click('Save')
+        ->assertSee('Saved')
+        ->assertNoJavaScriptErrors();
+
+    $el = FormSchema::query()->latest('id')->first()->json['pages'][0]['elements'][0];
+
+    expect($el['descriptionLocation'])->toBe('underTitle')
+        ->and($el['minWidth'])->toBe('200px')
+        ->and($el['maxWidth'])->toBe('480px');
+});
+
+it('sets survey-wide completion props (auto-submit, already-submitted & loading HTML)', function () {
+    $page = visit('/admin/designer-page');
+
+    $page->click('[data-block-id="short_text"]')          // give the preview content
+        ->click('[data-testid="form-settings"]')
+        ->uncheck('[data-testid="survey-autocomplete"]')   // default true -> store false
+        ->fill('#prop-completedBeforeHtml', 'You already responded.')
+        ->fill('#prop-loadingHtml', 'Loading…')
+        ->click('Save')
+        ->assertSee('Saved')
+        ->assertNoJavaScriptErrors();
+
+    $schema = FormSchema::query()->latest('id')->first()->json;
+
+    expect($schema['allowCompleteSurveyAutomatic'])->toBeFalse()
+        ->and(data_get($schema, 'completedBeforeHtml.default'))->toBe('You already responded.')
+        ->and(data_get($schema, 'loadingHtml.default'))->toBe('Loading…');
+});

@@ -44,7 +44,7 @@ panel controls.
   - [x] `navigateToUrl` (redirect after submit)
   - [x] `completedHtmlOnCondition` (per-outcome thank-you — pairs with quiz scoring)
   - [x] `showCompletedPage`
-  - [ ] `completedBeforeHtml` (already-submitted message) · `loadingHtml` — _deferred_
+  - [x] `completedBeforeHtml` (already-submitted message) · `loadingHtml`
 - [x] **1.3 Validation behavior** — ★★★ · S — "Validation & behavior" section in Form settings.
   - [x] `checkErrorsMode` (onNextPage / onValueChanged / onComplete)
   - [x] `questionErrorLocation` (top/bottom)
@@ -61,12 +61,12 @@ panel controls.
   - [x] `titleLocation` (top/bottom/left/hidden)
   - [x] `startWithNewLine` + `width` (side-by-side fields)
   - [x] `defaultValueExpression`
-  - [ ] `descriptionLocation` · `minWidth` / `maxWidth` — _deferred_
+  - [x] `descriptionLocation` · `minWidth` / `maxWidth`
 - [x] **1.6 Navigation buttons control** — ★★ · S — a "Navigation" refinement.
   - [x] `showNavigationButtons` / `showPrevButton`
   - [x] `goNextPageAutomatic`
   - [x] page-level `navigationButtonsVisibility` (inherit/show/hide)
-  - [ ] `showCompleteButton` · `allowCompleteSurveyAutomatic` — _deferred_
+  - [x] `allowCompleteSurveyAutomatic` — _`showCompleteButton` is not a `survey` property in survey-core 1.12.63; auto-submit covers the same need. Revisit on upgrade._
 
 ---
 
@@ -85,7 +85,7 @@ panel controls.
   - [x] panel & panel dynamic — nested canvas with per-container drag zones
   - [x] image picker — per-choice image URL editor
   - [x] button group
-  - [ ] color — _not shipped: `color` is not a question type in survey-core 1.12.63, so the JSON would not render. Revisit on upgrade._
+  - [x] color — shipped as `text` + `inputType: 'color'` (native swatch). `color` is not a question type in survey-core 1.12.63, so a dedicated type would not render; the text/inputType form round-trips and renders correctly.
 - [x] **2.3 Theme / appearance editor** — ★★★ · L — visual theme picker (presets + accent + light/dark) writing `schema.theme`, applied by every renderer via `applyStoredTheme`.
   - [x] accent colour (+ presets) / light-dark palette
   - [x] corner radius / density / panel-less mode
@@ -101,10 +101,10 @@ panel controls.
 
 - [x] **3.1 Translations management view** — ★★ · M–L — a **Translations** tab: every localized string × every locale in one grid, with per-locale coverage counts and missing-cell highlighting. Rows come from a generic walk of `LOCALIZED_KEYS`, so choices, matrix rows and validator messages are picked up automatically.
 - [x] **3.2 General undo / redo** — ★★ · M — snapshot history over `export()`/`replaceSchema()`, with keyed coalescing (a typing burst in one field = one step). Toolbar ↶/↷ + Ctrl/Cmd+Z / Ctrl+Shift+Z. Absorbs the old AI-only undo.
-- [~] **3.3 Templates & question library** — ★★ · M — a **Templates** panel (blank / contact / satisfaction / quiz / registration) applied as one undoable step, and a **saved-blocks library** (☆ on a field card → reusable block in the palette, kept in `localStorage`).
+- [x] **3.3 Templates & question library** — ★★ · M — a **Templates** panel (blank / contact / satisfaction / quiz / registration) applied as one undoable step, and a **saved-blocks library** (☆ on a field card → reusable block in the palette, kept in `localStorage`).
   - [x] starter templates
   - [x] save selection as a reusable block
-  - [ ] duplicate an entire form — _deferred: needs a Filament resource; the designer edits a single latest schema_
+  - [x] duplicate an entire form — a `FormSchemaResource` (Forms list) with a **Duplicate** row action (deep-copies the JSON, fresh slug + " (copy)" name, no revision history), a **Design** action that opens the record in the designer (`?record=`), and create/rename/delete
 - [x] **3.4 Page-level advanced** — ★ · S–M — `readOnly`, `enableIf`, `questionTitleLocation`, `maxWidth`, `maxTimeToFinish` (time limit).
 - [x] **3.5 Survey-wide advanced** — ★ · S — `questionTitlePattern`, `requiredText`, `maxTextLength`, `textUpdateMode`, `widthMode` / `width`, `cookieName` (fill once), `questionsOrder` (survey-wide randomize).
 - [x] **3.6 Version history & audit** — ★ · L — a `form_schema_revisions` table + `FormSchemaRevision` model; a snapshot is written on every *distinct* Save (attributed to the user). A **History** panel lists versions with field counts and a Current badge; Restore loads a version back into the builder as a normal undoable replacement (nothing is written until you Save).
@@ -113,19 +113,24 @@ panel controls.
 
 ## Status
 
-**Tiers 1, 2 and 3 are complete**, except for the items explicitly marked
-_deferred_ above. What remains, in rough priority order:
+**Tiers 1, 2 and 3 are complete.** The previously-deferred items have now
+shipped: heavier field types (panel / panel-dynamic, matrix dropdown / dynamic,
+image picker, button group, colour), the small deferred props
+(`completedBeforeHtml`, `loadingHtml`, `descriptionLocation`,
+`minWidth`/`maxWidth`, `allowCompleteSurveyAutomatic`), and **duplicate an entire
+form** via the new `FormSchemaResource`.
 
-1. **2.2 heavier field types** — panel / panel-dynamic (needs a nested canvas),
-   matrix dropdown / dynamic (typed-cell editor), image picker (per-choice image
-   URL), colour / button group.
-2. **Small deferred props** — `completedBeforeHtml`, `loadingHtml`,
-   `descriptionLocation`, `minWidth`/`maxWidth`, `showCompleteButton`,
-   `allowCompleteSurveyAutomatic`, theme background colour.
-3. **Duplicate an entire form** (3.3) — needs a Filament resource; the designer
-   currently edits a single latest schema.
-4. **Beyond the roadmap** — wire file/image/signature uploads to a storage disk;
-   extract the code into the `formwright/formbuilder` package.
+Two items are intentionally held for a survey-core upgrade, because the
+properties do not exist in 1.12.63 and would export non-rendering JSON:
+
+- `color` **question type** — shipped instead as `text` + `inputType: 'color'`.
+- `showCompleteButton` — auto-submit (`allowCompleteSurveyAutomatic`) covers the
+  same need for now.
+
+What remains, beyond the roadmap:
+
+1. Wire file/image/signature uploads to a storage disk.
+2. Extract the code into the `formwright/formbuilder` package.
 
 ---
 
