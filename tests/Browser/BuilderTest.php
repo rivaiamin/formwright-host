@@ -46,7 +46,9 @@ it('preserves and locks an unknown advanced type instead of corrupting it', func
             'name' => 'page1',
             'elements' => [
                 [
-                    'type' => 'matrixdynamic',
+                    // A type the registry does not know (and never will) — the
+                    // builder must preserve it byte-for-byte and lock the card.
+                    'type' => 'bootstrapslider',
                     'name' => 'grid',
                     'columns' => [['name' => 'c1', 'title' => 'Col 1']],
                     'rowCount' => 2,
@@ -61,7 +63,7 @@ it('preserves and locks an unknown advanced type instead of corrupting it', func
 
     // The advanced element shows as a locked card, editable only in JSON.
     $page->assertSee('Advanced')
-        ->assertSee('matrixdynamic')
+        ->assertSee('bootstrapslider')
         ->assertNoJavaScriptErrors()
         ->click('Save')
         ->assertSee('Saved');
@@ -70,7 +72,7 @@ it('preserves and locks an unknown advanced type instead of corrupting it', func
     $stored = FormSchema::query()->latest('id')->first();
     $el = $stored->json['pages'][0]['elements'][0];
 
-    expect($el['type'])->toBe('matrixdynamic')
+    expect($el['type'])->toBe('bootstrapslider')
         ->and($el['columns'][0]['name'])->toBe('c1')
         ->and($el['rowCount'])->toBe(2);
 });

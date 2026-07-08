@@ -38,7 +38,7 @@ it('drafts a form with AI, applies it, and can undo', function () {
         ->assertSee('AI Question')                    // the drafted field is now on the canvas
         ->assertNoJavaScriptErrors();
 
-    // Undo restores the previous (empty) schema.
-    $page->click('[data-testid="ai-undo"]')
+    // The general Undo (which the AI apply feeds into) restores the previous schema.
+    $page->click('[data-testid="undo"]')
         ->assertDontSee('AI Question');
 });

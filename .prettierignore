@@ -1,2 +1,6 @@
 resources/js/components/ui/*
 resources/views/mail/*
+
+# Generated/compiled bundles — never format build output.
+resources/dist
+resources/js/builder/dist
