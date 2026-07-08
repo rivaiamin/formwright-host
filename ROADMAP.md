@@ -99,7 +99,7 @@ panel controls.
 ## Tier 3 — Workflow & scale (product maturity)
 
 - [ ] **3.1 Translations management view** — ★★ · M–L — one grid of every localized string × every locale; reads/writes the same `{default,<locale>}` objects.
-- [ ] **3.2 General undo / redo** — ★★ · M — full history stack for every edit (today only AI proposals undo); snapshot-based on `export()`/`replaceSchema()`.
+- [x] **3.2 General undo / redo** — ★★ · M — snapshot history over `export()`/`replaceSchema()`, with keyed coalescing (a typing burst in one field = one step). Toolbar ↶/↷ + Ctrl/Cmd+Z / Ctrl+Shift+Z. Absorbs the old AI-only undo.
 - [ ] **3.3 Templates & question library** — ★★ · M — starter templates, "save selection as reusable block", duplicate an entire form.
 - [ ] **3.4 Page-level advanced** — ★ · S–M — `readOnly` / `enableIf` / `requiredIf`, `maxWidth`, `questionTitleLocation`, `timeLimit`, `questionStartIndex`.
 - [ ] **3.5 Survey-wide advanced** — ★ · S — `questionTitlePattern`, `requiredText`, `maxTextLength`, `textUpdateMode`, `widthMode` / `width`, `cookieName` (fill once), `questionsOrder` (survey-wide randomize).
