@@ -98,25 +98,33 @@ panel controls.
 
 ## Tier 3 — Workflow & scale (product maturity)
 
-- [ ] **3.1 Translations management view** — ★★ · M–L — one grid of every localized string × every locale; reads/writes the same `{default,<locale>}` objects.
+- [x] **3.1 Translations management view** — ★★ · M–L — a **Translations** tab: every localized string × every locale in one grid, with per-locale coverage counts and missing-cell highlighting. Rows come from a generic walk of `LOCALIZED_KEYS`, so choices, matrix rows and validator messages are picked up automatically.
 - [x] **3.2 General undo / redo** — ★★ · M — snapshot history over `export()`/`replaceSchema()`, with keyed coalescing (a typing burst in one field = one step). Toolbar ↶/↷ + Ctrl/Cmd+Z / Ctrl+Shift+Z. Absorbs the old AI-only undo.
-- [ ] **3.3 Templates & question library** — ★★ · M — starter templates, "save selection as reusable block", duplicate an entire form.
-- [ ] **3.4 Page-level advanced** — ★ · S–M — `readOnly` / `enableIf` / `requiredIf`, `maxWidth`, `questionTitleLocation`, `timeLimit`, `questionStartIndex`.
-- [ ] **3.5 Survey-wide advanced** — ★ · S — `questionTitlePattern`, `requiredText`, `maxTextLength`, `textUpdateMode`, `widthMode` / `width`, `cookieName` (fill once), `questionsOrder` (survey-wide randomize).
-- [ ] **3.6 Version history & audit** — ★ · L — persist schema revisions with a diff/restore view; needs a DB revisions table.
+- [~] **3.3 Templates & question library** — ★★ · M — a **Templates** panel (blank / contact / satisfaction / quiz / registration) applied as one undoable step, and a **saved-blocks library** (☆ on a field card → reusable block in the palette, kept in `localStorage`).
+  - [x] starter templates
+  - [x] save selection as a reusable block
+  - [ ] duplicate an entire form — _deferred: needs a Filament resource; the designer edits a single latest schema_
+- [x] **3.4 Page-level advanced** — ★ · S–M — `readOnly`, `enableIf`, `questionTitleLocation`, `maxWidth`, `maxTimeToFinish` (time limit).
+- [x] **3.5 Survey-wide advanced** — ★ · S — `questionTitlePattern`, `requiredText`, `maxTextLength`, `textUpdateMode`, `widthMode` / `width`, `cookieName` (fill once), `questionsOrder` (survey-wide randomize).
+- [x] **3.6 Version history & audit** — ★ · L — a `form_schema_revisions` table + `FormSchemaRevision` model; a snapshot is written on every *distinct* Save (attributed to the user). A **History** panel lists versions with field counts and a Current badge; Restore loads a version back into the builder as a normal undoable replacement (nothing is written until you Save).
 
 ---
 
-## Suggested execution order
+## Status
 
-1. **Tier 1 as one pass** (1.1 → 1.6) — completes the "settings" story that this
-   session started; each is a small panel section and together they close the
-   most common real-form gaps.
-2. **2.2 field types, incrementally** — add the two or three most-requested types
-   (matrix, panel dynamic, ranking) alongside Tier 1.
-3. **2.1 triggers/calculated values** and **2.3 theme editor** — the two features
-   that most change what the product can do and how it looks.
-4. **Tier 3** — pick up as usage scales (translations grid, undo/redo, templates).
+**Tiers 1, 2 and 3 are complete**, except for the items explicitly marked
+_deferred_ above. What remains, in rough priority order:
+
+1. **2.2 heavier field types** — panel / panel-dynamic (needs a nested canvas),
+   matrix dropdown / dynamic (typed-cell editor), image picker (per-choice image
+   URL), colour / button group.
+2. **Small deferred props** — `completedBeforeHtml`, `loadingHtml`,
+   `descriptionLocation`, `minWidth`/`maxWidth`, `showCompleteButton`,
+   `allowCompleteSurveyAutomatic`, theme background colour.
+3. **Duplicate an entire form** (3.3) — needs a Filament resource; the designer
+   currently edits a single latest schema.
+4. **Beyond the roadmap** — wire file/image/signature uploads to a storage disk;
+   extract the code into the `formwright/formbuilder` package.
 
 ---
 
