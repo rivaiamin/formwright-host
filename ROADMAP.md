@@ -75,21 +75,22 @@ panel controls.
 - [x] **2.1 Triggers & calculated values** — ★★★ · L — the single biggest capability jump (static forms → interactive flows). An "Automation" section in Form settings; verified firing at runtime on the public form.
   - [x] `triggers[]`: `complete`, `setvalue`, `copyvalue`, `runexpression`, `skip`
   - [x] `calculatedValues[]` (named expressions for text piping + logic)
-- [~] **2.2 More field types** — ★★★ · L (incremental) — one registry entry + one card preview each; ship by demand. _First batch shipped; rest by demand._
+- [x] **2.2 More field types** — ★★★ · L — 21 block types, each with a registry entry, a card preview and an editor.
   - [x] matrix (single-select grid) — rows/columns editor
   - [x] ranking
   - [x] multiple text — items editor
   - [x] tagbox (multi-select dropdown)
   - [x] expression (read-only computed display)
-  - [ ] matrix dropdown / dynamic (currently preserved-and-locked; give them editors)
-  - [ ] panel & panel dynamic (repeating groups — needs nested canvas)
-  - [ ] image picker (needs per-choice image URL editor)
-  - [ ] color / button group
+  - [x] matrix dropdown / dynamic — typed-cell columns editor (`cellType` per column)
+  - [x] panel & panel dynamic — nested canvas with per-container drag zones
+  - [x] image picker — per-choice image URL editor
+  - [x] button group
+  - [ ] color — _not shipped: `color` is not a question type in survey-core 1.12.63, so the JSON would not render. Revisit on upgrade._
 - [x] **2.3 Theme / appearance editor** — ★★★ · L — visual theme picker (presets + accent + light/dark) writing `schema.theme`, applied by every renderer via `applyStoredTheme`.
   - [x] accent colour (+ presets) / light-dark palette
   - [x] corner radius / density / panel-less mode
   - [x] font
-  - [ ] background colour — _deferred (needs the derived-colour set to look right)_
+  - [x] background colour — page + question surface, each writing its derived companions (`-dim-light`/`-dim-dark`, `-dark`), with a "use palette defaults" reset
 - [x] **2.4 Welcome / start page** — ★★ · M — `firstPageIsStarted` + `startSurveyText`; toggle in Form settings, "Start page" badge on page 1 in the canvas.
 - [x] **2.5 Table of contents & page navigation** — ★★ · M — survey `showTOC` + `tocLocation`; page `navigationTitle` / `navigationDescription`.
 - [x] **2.6 Dynamic choices** — ★★ · M — a "Choices from" source picker (fixed list / another question / web service) writing `choicesByUrl` and `choicesFromQuestion`.
