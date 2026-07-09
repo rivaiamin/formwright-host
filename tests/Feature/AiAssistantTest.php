@@ -1,12 +1,12 @@
 <?php
 
-use App\Contracts\AiAssistant;
-use App\Filament\Pages\DesignerPage;
 use App\Models\User;
-use App\Support\AiAssistantNotConfiguredException;
-use App\Support\ClaudeAiAssistant;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
+use Rivaiamin\Formwright\Contracts\AiAssistant;
+use Rivaiamin\Formwright\Filament\Pages\DesignerPage;
+use Rivaiamin\Formwright\Support\AiAssistantNotConfiguredException;
+use Rivaiamin\Formwright\Support\ClaudeAiAssistant;
 
 beforeEach(function () {
     config()->set('formbuilder.ai.enabled', true);

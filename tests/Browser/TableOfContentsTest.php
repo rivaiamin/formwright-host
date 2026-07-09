@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\FormSchema;
 use App\Models\User;
+use Rivaiamin\Formwright\Models\FormSchema;
 
 it('enables the table of contents and sets a page menu title', function () {
     $this->actingAs(User::factory()->create());

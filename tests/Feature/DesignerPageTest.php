@@ -1,9 +1,9 @@
 <?php
 
-use App\Filament\Pages\DesignerPage;
-use App\Models\FormSchema;
 use App\Models\User;
 use Livewire\Livewire;
+use Rivaiamin\Formwright\Filament\Pages\DesignerPage;
+use Rivaiamin\Formwright\Models\FormSchema;
 
 beforeEach(function () {
     $this->actingAs(User::factory()->create());

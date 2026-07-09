@@ -4,3 +4,4 @@ resources/views/mail/*
 # Generated/compiled bundles — never format build output.
 resources/dist
 resources/js/builder/dist
+packages/rivaiamin/formwright/resources/js/builder/dist

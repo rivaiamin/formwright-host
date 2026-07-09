@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\FormSchema;
 use App\Models\User;
+use Rivaiamin\Formwright\Models\FormSchema;
 
 beforeEach(function () {
     $this->actingAs(User::factory()->create());

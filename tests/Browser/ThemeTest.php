@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\FormSchema;
 use App\Models\User;
+use Rivaiamin\Formwright\Models\FormSchema;
 
 it('builds a theme and applies it in the live preview', function () {
     $this->actingAs(User::factory()->create());

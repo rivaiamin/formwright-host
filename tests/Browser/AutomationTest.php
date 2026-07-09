@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\FormSchema;
-use App\Models\FormSubmission;
 use App\Models\User;
+use Rivaiamin\Formwright\Models\FormSchema;
+use Rivaiamin\Formwright\Models\FormSubmission;
 
 it('adds a calculated value and a trigger through the form settings', function () {
     $this->actingAs(User::factory()->create());

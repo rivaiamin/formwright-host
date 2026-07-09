@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\FormSchema;
-use App\Models\FormSubmission;
+use Rivaiamin\Formwright\Models\FormSchema;
+use Rivaiamin\Formwright\Models\FormSubmission;
 
 /**
  * Verifies the public renderer's upload contract: a file / signature question

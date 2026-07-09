@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\FormSchema;
-use App\Models\FormSubmission;
+use Rivaiamin\Formwright\Models\FormSchema;
+use Rivaiamin\Formwright\Models\FormSubmission;
 
 it('renders the public form and stores a submission when completed', function () {
     $schema = FormSchema::factory()->create([

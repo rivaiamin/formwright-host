@@ -1,8 +1,8 @@
 <?php
 
-use App\Contracts\SubmissionStore;
-use App\Models\FormSchema;
-use App\Models\FormSubmission;
+use Rivaiamin\Formwright\Contracts\SubmissionStore;
+use Rivaiamin\Formwright\Models\FormSchema;
+use Rivaiamin\Formwright\Models\FormSubmission;
 
 function publicSchema(array $elements): FormSchema
 {

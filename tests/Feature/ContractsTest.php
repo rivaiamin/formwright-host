@@ -1,18 +1,19 @@
 <?php
 
-use App\Contracts\AccessPolicy;
-use App\Contracts\AiAssistant;
-use App\Contracts\RuntimeContext;
-use App\Contracts\SubmissionStore;
-use App\Contracts\UrlResolver;
-use App\Models\FormSchema;
 use App\Models\User;
-use App\Support\AiAssistantNotConfiguredException;
-use App\Support\DefaultAccessPolicy;
-use App\Support\DefaultRuntimeContext;
-use App\Support\DefaultUrlResolver;
-use App\Support\EloquentSubmissionStore;
-use App\Support\NullAiAssistant;
+use Rivaiamin\Formwright\Contracts\AccessPolicy;
+use Rivaiamin\Formwright\Contracts\AiAssistant;
+use Rivaiamin\Formwright\Contracts\RuntimeContext;
+use Rivaiamin\Formwright\Contracts\SubmissionStore;
+use Rivaiamin\Formwright\Contracts\UrlResolver;
+use Rivaiamin\Formwright\Models\FormSchema;
+use Rivaiamin\Formwright\Models\FormSubmission;
+use Rivaiamin\Formwright\Support\AiAssistantNotConfiguredException;
+use Rivaiamin\Formwright\Support\DefaultAccessPolicy;
+use Rivaiamin\Formwright\Support\DefaultRuntimeContext;
+use Rivaiamin\Formwright\Support\DefaultUrlResolver;
+use Rivaiamin\Formwright\Support\EloquentSubmissionStore;
+use Rivaiamin\Formwright\Support\NullAiAssistant;
 
 it('binds every contract to its default implementation', function () {
     expect(app(SubmissionStore::class))->toBeInstanceOf(EloquentSubmissionStore::class)
@@ -68,5 +69,5 @@ it('lets a host rebind the AccessPolicy to deny submissions (403)', function () 
 
     $this->postJson("/forms/{$schema->slug}", ['data' => ['q' => 'x']])->assertForbidden();
 
-    expect(\App\Models\FormSubmission::count())->toBe(0);
+    expect(FormSubmission::count())->toBe(0);
 });

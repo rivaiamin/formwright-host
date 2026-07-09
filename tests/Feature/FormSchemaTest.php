@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\FormSchema;
+use Rivaiamin\Formwright\Models\FormSchema;
 
 it('persists and round-trips a SurveyJS schema through the json column', function () {
     $json = FormSchema::blankSchema('Round trip');
