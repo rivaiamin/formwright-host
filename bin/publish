@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+#
+# bin/publish — publish packages/rivaiamin/formwright/ to the standalone
+# rivaiamin/formwright repository as a single, additive commit.
+#
+# Monorepo model: this host repo is the dev source of truth. The package repo is
+# a publish target. This script copies the current package content into a fresh
+# clone of the package repo, commits the delta, and pushes — so the package
+# repo's history only ever grows (no rewrite, safe for anyone who cloned it).
+#
+# Usage:
+#   bin/publish                          # message auto-derived from host HEAD
+#   bin/publish "Custom commit message"
+#   PACKAGE_TAG=v0.1.0 bin/publish       # also create + push a release tag
+#   PACKAGE_REMOTE=git@github.com:you/repo.git bin/publish
+#
+set -euo pipefail
+
+# --- locate the host repo root (this script lives in bin/) --------------------
+HOST_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PKG_SRC="$HOST_ROOT/packages/rivaiamin/formwright"
+
+# --- config (override via env) ------------------------------------------------
+DEFAULT_REMOTE="$(git -C "$HOST_ROOT" remote get-url formwright 2>/dev/null || echo 'git@github.com:rivaiamin/formwright.git')"
+PACKAGE_REMOTE="${PACKAGE_REMOTE:-$DEFAULT_REMOTE}"
+PACKAGE_BRANCH="${PACKAGE_BRANCH:-main}"
+PACKAGE_TAG="${PACKAGE_TAG:-}"
+
+# --- sanity checks ------------------------------------------------------------
+[ -d "$PKG_SRC/src" ] || { echo "error: package source not found at $PKG_SRC" >&2; exit 1; }
+command -v rsync >/dev/null || { echo "error: rsync is required" >&2; exit 1; }
+
+# --- commit message -----------------------------------------------------------
+HOST_REF="$(git -C "$HOST_ROOT" rev-parse --short HEAD)"
+HOST_SUBJECT="$(git -C "$HOST_ROOT" log -1 --pretty=%s)"
+MESSAGE="${1:-Publish ${HOST_REF}: ${HOST_SUBJECT}}"
+
+# --- work in a throwaway clone ------------------------------------------------
+WORK="$(mktemp -d)"
+trap 'rm -rf "$WORK"' EXIT
+
+echo "→ cloning ${PACKAGE_REMOTE} (${PACKAGE_BRANCH})…"
+git clone --quiet --branch "$PACKAGE_BRANCH" --single-branch "$PACKAGE_REMOTE" "$WORK/pkg"
+
+echo "→ syncing package content…"
+rsync -a --delete --exclude='.git' "$PKG_SRC/" "$WORK/pkg/"
+
+cd "$WORK/pkg"
+
+if [ -z "$(git status --porcelain)" ]; then
+    echo "✓ package repo already matches — nothing to publish."
+else
+    git add -A
+    git commit --quiet -m "$MESSAGE"
+    echo "→ pushing to ${PACKAGE_BRANCH}…"
+    git push --quiet origin "$PACKAGE_BRANCH"
+    echo "✓ published $(git rev-parse --short HEAD): ${MESSAGE}"
+fi
+
+# --- optional release tag -----------------------------------------------------
+if [ -n "$PACKAGE_TAG" ]; then
+    if git rev-parse -q --verify "refs/tags/${PACKAGE_TAG}" >/dev/null; then
+        echo "! tag ${PACKAGE_TAG} already exists on the package repo — skipping."
+    else
+        git tag "$PACKAGE_TAG"
+        git push --quiet origin "refs/tags/${PACKAGE_TAG}"
+        echo "✓ tagged ${PACKAGE_TAG}"
+    fi
+fi
