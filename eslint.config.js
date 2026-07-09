@@ -126,8 +126,8 @@ export default ts.config(
         //    RTL_LOCALES) and local dedup helpers — never reactive state, so
         //    SvelteSet would add reactivity overhead for no reason.
         files: [
-            'resources/js/builder/**/*.svelte',
-            'resources/js/builder/**/*.svelte.ts',
+            'packages/rivaiamin/formwright/resources/js/builder/**/*.svelte',
+            'packages/rivaiamin/formwright/resources/js/builder/**/*.svelte.ts',
         ],
         rules: {
             '@typescript-eslint/no-unused-expressions': 'off',
