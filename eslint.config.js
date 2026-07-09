@@ -110,6 +110,7 @@ export default ts.config(
             'resources/dist/**',
             'resources/js/builder/dist/**',
             'packages/rivaiamin/formwright/resources/js/builder/dist/**',
+            'packages/rivaiamin/formwright/public/**',
             'resources/js/actions/**',
             'resources/js/components/ui/*',
             'resources/js/routes/**',

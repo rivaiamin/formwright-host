@@ -5,3 +5,4 @@ resources/views/mail/*
 resources/dist
 resources/js/builder/dist
 packages/rivaiamin/formwright/resources/js/builder/dist
+packages/rivaiamin/formwright/public

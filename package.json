@@ -6,7 +6,7 @@
         "postinstall": "git config merge.ours.driver true || true",
         "build": "vite build",
         "build:designer": "vite build --config packages/rivaiamin/formwright/vite.designer.config.ts",
-        "build:public": "vite build --config packages/rivaiamin/formwright/vite.public.config.ts",
+        "build:public": "vite build --config packages/rivaiamin/formwright/vite.public.config.ts && php artisan vendor:publish --tag=formwright-assets --force",
         "build:ssr": "vite build && vite build --ssr",
         "dev": "vite",
         "format": "prettier --write resources/ packages/rivaiamin/formwright/resources/",
