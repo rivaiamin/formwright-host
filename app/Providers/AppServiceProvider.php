@@ -6,11 +6,13 @@ use App\Contracts\AccessPolicy;
 use App\Contracts\AiAssistant;
 use App\Contracts\RuntimeContext;
 use App\Contracts\SubmissionStore;
+use App\Contracts\UploadStore;
 use App\Contracts\UrlResolver;
 use App\Http\Controllers\PublicFormController;
 use App\Support\ClaudeAiAssistant;
 use App\Support\DefaultAccessPolicy;
 use App\Support\DefaultRuntimeContext;
+use App\Support\DefaultUploadStore;
 use App\Support\DefaultUrlResolver;
 use App\Support\EloquentSubmissionStore;
 use App\Support\NullAiAssistant;
@@ -44,6 +46,7 @@ class AppServiceProvider extends ServiceProvider
                 : $app->make(NullAiAssistant::class);
         });
         $this->app->bind(UrlResolver::class, DefaultUrlResolver::class);
+        $this->app->bind(UploadStore::class, DefaultUploadStore::class);
     }
 
     /**
@@ -71,6 +74,9 @@ class AppServiceProvider extends ServiceProvider
             ->group(function (): void {
                 Route::get('/{slug}', [PublicFormController::class, 'show'])->name('formbuilder.forms.show');
                 Route::post('/{slug}', [PublicFormController::class, 'submit'])->name('formbuilder.forms.submit');
+                Route::post('/{slug}/uploads', [PublicFormController::class, 'upload'])
+                    ->middleware('throttle:'.config('formbuilder.uploads.throttle', '30,1'))
+                    ->name('formbuilder.forms.upload');
             });
     }
 
