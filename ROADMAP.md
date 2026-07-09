@@ -129,8 +129,14 @@ properties do not exist in 1.12.63 and would export non-rendering JSON:
 
 What remains, beyond the roadmap:
 
-1. Wire file/image/signature uploads to a storage disk.
-2. Extract the code into the `formwright/formbuilder` package.
+1. ~~Wire file/image/signature uploads to a storage disk.~~ **Done.** The public
+   renderer routes file / signature uploads through `POST forms/{slug}/uploads`
+   (survey-core `onUploadFiles`, `storeDataAsText: false`) instead of inlining
+   base64. Files land on the configurable `formbuilder.uploads.disk` — set
+   `FORMBUILDER_DISK=gcs` for the Google Cloud Storage disk (key-file via env) —
+   under `{prefix}/{tenant_id?}/{form-slug}/`, overridable by rebinding the
+   `UploadStore` contract. Only a stored URL is kept in the submission.
+2. Extract the code into the `rivaiamin/formwright` package.
 
 ---
 
