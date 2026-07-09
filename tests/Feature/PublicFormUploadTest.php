@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\FormSchema;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Rivaiamin\Formwright\Models\FormSchema;
 
 function uploadSchema(): FormSchema
 {

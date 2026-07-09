@@ -1,6 +1,6 @@
 <?php
 
-use App\Support\SubmissionEvaluator;
+use Rivaiamin\Formwright\Support\SubmissionEvaluator;
 
 beforeEach(function () {
     $this->evaluator = new SubmissionEvaluator;

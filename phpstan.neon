@@ -9,5 +9,7 @@ parameters:
         - config/
         - database/
         - routes/
+        - packages/rivaiamin/formwright/src/
+        - packages/rivaiamin/formwright/database/
 
     level: 7

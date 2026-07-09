@@ -5,12 +5,12 @@
     "scripts": {
         "postinstall": "git config merge.ours.driver true || true",
         "build": "vite build",
-        "build:designer": "vite build --config vite.designer.config.ts",
-        "build:public": "vite build --config vite.public.config.ts",
+        "build:designer": "vite build --config packages/rivaiamin/formwright/vite.designer.config.ts",
+        "build:public": "vite build --config packages/rivaiamin/formwright/vite.public.config.ts",
         "build:ssr": "vite build && vite build --ssr",
         "dev": "vite",
-        "format": "prettier --write resources/",
-        "format:check": "prettier --check resources/",
+        "format": "prettier --write resources/ packages/rivaiamin/formwright/resources/",
+        "format:check": "prettier --check resources/ packages/rivaiamin/formwright/resources/",
         "lint": "eslint . --fix",
         "lint:check": "eslint .",
         "types:check": "svelte-check --tsconfig ./tsconfig.json"

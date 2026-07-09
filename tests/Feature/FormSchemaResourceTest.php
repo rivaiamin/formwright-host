@@ -1,11 +1,11 @@
 <?php
 
-use App\Filament\Resources\FormSchemas\Pages\CreateFormSchema;
-use App\Filament\Resources\FormSchemas\Pages\ListFormSchemas;
-use App\Models\FormSchema;
 use App\Models\User;
 use Filament\Actions\Testing\TestAction;
 use Livewire\Livewire;
+use Rivaiamin\Formwright\Filament\Resources\FormSchemas\Pages\CreateFormSchema;
+use Rivaiamin\Formwright\Filament\Resources\FormSchemas\Pages\ListFormSchemas;
+use Rivaiamin\Formwright\Models\FormSchema;
 
 beforeEach(function () {
     $this->actingAs(User::factory()->create());

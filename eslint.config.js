@@ -109,6 +109,7 @@ export default ts.config(
             // Generated/compiled bundles — never lint build output.
             'resources/dist/**',
             'resources/js/builder/dist/**',
+            'packages/rivaiamin/formwright/resources/js/builder/dist/**',
             'resources/js/actions/**',
             'resources/js/components/ui/*',
             'resources/js/routes/**',

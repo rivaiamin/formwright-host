@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\FormSchema;
-use App\Models\FormSubmission;
-use App\Support\Tenancy;
+use Rivaiamin\Formwright\Models\FormSchema;
+use Rivaiamin\Formwright\Models\FormSubmission;
+use Rivaiamin\Formwright\Support\Tenancy;
 
 afterEach(function () {
     Tenancy::forgetResolver();

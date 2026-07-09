@@ -1,7 +1,7 @@
 <?php
 
-use App\Support\SchemaValidationException;
-use App\Support\SchemaValidator;
+use Rivaiamin\Formwright\Support\SchemaValidationException;
+use Rivaiamin\Formwright\Support\SchemaValidator;
 
 beforeEach(function () {
     $this->validator = new SchemaValidator;

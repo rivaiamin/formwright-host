@@ -121,6 +121,9 @@
     "include": [
         "resources/js/**/*.ts",
         "resources/js/**/*.d.ts",
-        "resources/js/**/*.svelte"
+        "resources/js/**/*.svelte",
+        "packages/rivaiamin/formwright/resources/js/**/*.ts",
+        "packages/rivaiamin/formwright/resources/js/**/*.d.ts",
+        "packages/rivaiamin/formwright/resources/js/**/*.svelte"
     ]
 }

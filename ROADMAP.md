@@ -136,7 +136,14 @@ What remains, beyond the roadmap:
    `FORMBUILDER_DISK=gcs` for the Google Cloud Storage disk (key-file via env) —
    under `{prefix}/{tenant_id?}/{form-slug}/`, overridable by rebinding the
    `UploadStore` contract. Only a stored URL is kept in the submission.
-2. Extract the code into the `rivaiamin/formwright` package.
+2. ~~Extract the code into the `rivaiamin/formwright` package.~~ **Done.** The
+   builder now lives in `packages/rivaiamin/formwright` (namespace
+   `Rivaiamin\Formwright\`), installed by the host via a path repository. A
+   `FormwrightServiceProvider` (auto-discovered) registers the config, migrations,
+   views, public routes, builder assets and contract bindings; a `FormwrightPlugin`
+   registers the Filament resource + designer page (`->plugin(FormwrightPlugin::make())`).
+   The Svelte builder/public frontends and their vite configs moved too. The host
+   app is now a thin harness that requires the package.
 
 ---
 

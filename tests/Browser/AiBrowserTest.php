@@ -1,7 +1,7 @@
 <?php
 
-use App\Contracts\AiAssistant;
 use App\Models\User;
+use Rivaiamin\Formwright\Contracts\AiAssistant;
 
 beforeEach(function () {
     $this->actingAs(User::factory()->create());
