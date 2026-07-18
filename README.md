@@ -64,6 +64,10 @@ build-time check should keep `survey-creator` out of `package.json` and the lock
 - **Multi-page forms** with drag-to-reorder fields (within and across pages) and pages.
 - **Drag-and-drop or click-to-add** from the palette (via `svelte-dnd-action`).
 - **Raw JSON editor** — the schema is canonical; edits there drive the visual builder.
+- **Model-backed & cascading choices** — a choice field can pull its options from a host
+  Eloquent model (a config-allowlisted "data source"), optionally **filtered by another
+  field's answer** for dependent/cascading dropdowns (e.g. Country → Timezone). Searchable,
+  lazy-loaded for large tables, and resolved through the host's own endpoint.
 
 **Localization**
 
@@ -208,6 +212,19 @@ Build a URL in PHP via the `UrlResolver` contract:
 app(\App\Contracts\UrlResolver::class)->publicFormUrl($schema, 'ar');
 ```
 
+### Model-backed & cascading choices
+
+On any choice field (dropdown, single/multiple choice, tagbox…), open **Choices from** in
+the property panel and pick **"A Laravel model"**. Then choose a **Source** (one of the
+allowlisted data sources) and, optionally, a **Filtered by** field to make a *dependent*
+dropdown — e.g. a **Timezone** dropdown that only shows the zones of the **Country** picked
+above.
+
+At render time (preview and the public form) options are fetched from
+`GET /forms/{slug}/data-sources/{key}`: `dropdown`/`tagbox` fields lazy-load a searchable,
+paginated list; other choice types load their full list. Changing the parent field clears and
+reloads its dependents. Wire up the sources in [Configuration → Model-backed choices](#model-backed-choices).
+
 ---
 
 ## The SurveyJS JSON contract
@@ -262,6 +279,11 @@ The builder produces and consumes exactly this shape:
   (e.g. `"{age} > 18 and {country} = 'US'"`).
 - **Scoring** uses native `correctAnswer` plus a custom `points` property registered via
   `Serializer.addProperty`.
+- **Choice sources** — a choice field's options come from a fixed `choices[]` list, another
+  question (`choicesFromQuestion`), a web service (`choicesByUrl`), or a host **Laravel model**.
+  The model source stores `dataSource` (a config-source key), an optional `dataFilterQuestion`
+  (the field it cascades off), and `choicesLazyLoadEnabled` for `dropdown`/`tagbox`. Options are
+  resolved server-side via `GET /forms/{slug}/data-sources/{key}` (see [Configuration](#model-backed-choices)).
 
 ---
 
@@ -320,11 +342,45 @@ FormSchema::withoutGlobalScope('tenant')->get();
 The tenant column is added by a migration and stays nullable, so nothing changes while
 tenancy is disabled.
 
+### Model-backed choices
+
+A choice field can draw its options from a host Eloquent model instead of a fixed list.
+Declare an **allowlist** of sources in `config/formbuilder.php` — only these keys are reachable,
+and the browser only ever sends a filter value, a search term and pagination (never a model
+class or column name):
+
+```php
+'data_sources' => [
+    'countries' => [
+        'label'          => 'Countries',
+        'model'          => App\Models\Country::class,
+        'value'          => 'id',                // option value column
+        'text'           => 'name',              // option label column
+        'search_columns' => ['name', 'code'],    // optional; defaults to [text]
+    ],
+    'timezones' => [
+        'label'          => 'Timezones',
+        'model'          => App\Models\Timezone::class,
+        'value'          => 'id',
+        'text'           => 'name',
+        'filter_column'  => 'country_id',        // optional; enables cascade
+        // 'scope'       => fn ($query, $ctx) => $query->where(...), // tenancy / published-only
+        // 'limit'       => 50,                    // max rows per request (default 50)
+    ],
+],
+```
+
+`data_sources` defaults to empty — nothing is exposed until you add an entry. The endpoint
+(`GET /forms/{slug}/data-sources/{key}`) is gated by `AccessPolicy::canView` and throttled with
+`uploads.throttle`. This repo ships demo `Country` / `Timezone` models plus a
+`CountryTimezoneSeeder` (5 countries, real IANA zones) so you can try the Country → Timezone
+cascade immediately after `php artisan migrate --seed`.
+
 ---
 
 ## Extensibility contracts
 
-Five seams, each bound to a sensible default in `AppServiceProvider::register()`. A host app
+Six seams, each bound to a sensible default in `AppServiceProvider::register()`. A host app
 rebinds any of them in its own service provider:
 
 ```php
@@ -337,6 +393,7 @@ $this->app->bind(\App\Contracts\AccessPolicy::class, MyAccessPolicy::class);
 | `AccessPolicy` | `DefaultAccessPolicy` | can view / edit / submit a schema |
 | `SubmissionStore` | `EloquentSubmissionStore` | persist & retrieve submissions |
 | `UrlResolver` | `DefaultUrlResolver` | build public/asset URLs |
+| `DataSourceResolver` | `ConfigDataSourceResolver` | resolve model-backed / cascading choice options |
 | `AiAssistant` | `NullAiAssistant` | draft/rewrite a form or field (opt-in) |
 
 **Access policy** — the public controller calls `canView` (on render) and `canSubmit` (on
@@ -357,6 +414,16 @@ class MyAccessPolicy extends App\Support\DefaultAccessPolicy
 ```php
 class WarehouseSubmissionStore implements App\Contracts\SubmissionStore { /* … */ }
 $this->app->bind(App\Contracts\SubmissionStore::class, WarehouseSubmissionStore::class);
+```
+
+**Data source resolver** — the config allowlist is only the default. Rebind the contract to
+resolve model-backed choices from anywhere (a service, a warehouse, a Filament resource) — the
+public endpoint and builder UI keep working unchanged:
+
+```php
+use Rivaiamin\Formwright\Contracts\DataSourceResolver;
+
+$this->app->bind(DataSourceResolver::class, MyDataSourceResolver::class);
 ```
 
 **AI assistant** — bound to `NullAiAssistant` by default (throws

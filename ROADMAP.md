@@ -27,7 +27,7 @@ Legend — **Effort:** S (hours) · M (a day) · L (multi-day). **Impact:** ★�
 - [x] **Quiz** — per-field `points` + `correctAnswer`, live preview tally, server-side scoring
 - [x] **Pages** — title, description, hidden (`visible`), `visibleIf`, `questionsOrder`, rename
 - [x] **Form (survey)** — title, description, progress bar (+ type), question numbers, questions-per-page mode, preview-before-submit, nav button text, thank-you HTML
-- [x] **Platform** — i18n + RTL, live preview, JSON round-trip, public fill-out + submissions, multi-tenancy, AI draft/rewrite
+- [x] **Platform** — i18n + RTL, live preview, JSON round-trip, public fill-out + submissions, multi-tenancy, AI draft/rewrite, model-backed & cascading choices
 
 ---
 
@@ -94,6 +94,7 @@ panel controls.
 - [x] **2.4 Welcome / start page** — ★★ · M — `firstPageIsStarted` + `startSurveyText`; toggle in Form settings, "Start page" badge on page 1 in the canvas.
 - [x] **2.5 Table of contents & page navigation** — ★★ · M — survey `showTOC` + `tocLocation`; page `navigationTitle` / `navigationDescription`.
 - [x] **2.6 Dynamic choices** — ★★ · M — a "Choices from" source picker (fixed list / another question / web service) writing `choicesByUrl` and `choicesFromQuestion`.
+- [x] **2.7 Model-backed & cascading choices** — ★★★ · M — a fourth "Choices from" source ("A Laravel model"). Options come from a host Eloquent model declared in a `config('formbuilder.data_sources')` **allowlist**, resolved by a new `DataSourceResolver` contract (default `ConfigDataSourceResolver`) through `GET /forms/{slug}/data-sources/{key}` — gated by `AccessPolicy::canView`, throttled, searchable and lazy-loaded (`choicesLazyLoadEnabled` for dropdown/tagbox). A **"Filtered by"** field (`dataFilterQuestion` → `filter_column`) makes dependent/cascading dropdowns (e.g. Country → Timezone); the browser only ever sends a filter value, search term and pagination. Ships demo `Country`/`Timezone` models + seeder.
 
 ---
 
@@ -118,7 +119,10 @@ shipped: heavier field types (panel / panel-dynamic, matrix dropdown / dynamic,
 image picker, button group, colour), the small deferred props
 (`completedBeforeHtml`, `loadingHtml`, `descriptionLocation`,
 `minWidth`/`maxWidth`, `allowCompleteSurveyAutomatic`), and **duplicate an entire
-form** via the new `FormSchemaResource`.
+form** via the new `FormSchemaResource`. Tier 2 also gained **model-backed &
+cascading choices** (2.7) — a config-allowlisted `DataSourceResolver` contract and
+`/forms/{slug}/data-sources/{key}` endpoint powering dependent dropdowns such as
+Country → Timezone (shipped with demo `Country`/`Timezone` models + seeder).
 
 Two items are intentionally held for a survey-core upgrade, because the
 properties do not exist in 1.12.63 and would export non-rendering JSON:
