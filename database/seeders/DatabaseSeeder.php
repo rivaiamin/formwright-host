@@ -20,5 +20,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'admin@example.com'],
             ['name' => 'Admin', 'password' => Hash::make('password')],
         );
+
+        $this->call(CountryTimezoneSeeder::class);
     }
 }
